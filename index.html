@@ -1,74 +1,91 @@
 <!DOCTYPE html>
 <html lang="ms">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>My TikTok Auto Poster</title>
-  <style>
-    * { box-sizing: border-box; }
-    body {
-      margin: 0;
-      font-family: Arial, sans-serif;
-      background: #f5f6fa;
-      color: #222;
-      text-align: center;
-    }
-    header {
-      background: #111;
-      color: white;
-      padding: 45px 20px;
-    }
-    h1 { margin: 0 0 12px; }
-    main {
-      max-width: 650px;
-      margin: 35px auto;
-      padding: 25px;
-      background: white;
-      border-radius: 15px;
-      box-shadow: 0 3px 15px #ddd;
-    }
-    p { line-height: 1.7; }
-    .status {
-      display: inline-block;
-      padding: 9px 15px;
-      background: #fff0cc;
-      border-radius: 20px;
-      color: #805500;
-      font-weight: bold;
-    }
-    footer {
-      padding: 20px;
-      color: #666;
-      font-size: 13px;
-    }
-  </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>TikTok AutoPost</title>
+<style>
+*{box-sizing:border-box}
+body{margin:0;background:#10131c;color:white;font-family:Arial,sans-serif;padding:20px}
+header{padding:22px;background:linear-gradient(120deg,#087f73,#10a58c);border-radius:18px}
+h1{margin:0 0 8px}
+.card{background:#1d2331;padding:18px;border-radius:16px;margin-top:18px}
+label{display:block;margin:14px 0 7px}
+input,textarea,select{width:100%;padding:13px;border:0;border-radius:9px;background:#30394b;color:white}
+button{width:100%;padding:14px;border:0;border-radius:10px;background:#10a58c;color:white;font-weight:bold;margin-top:14px}
+.preview{margin-top:12px;max-width:100%;border-radius:12px}
+small{color:#aab4c8}
+</style>
 </head>
 <body>
-
 <header>
-  <h1>My TikTok Auto Poster</h1>
-  <p>Pengurusan video dan jadual penerbitan TikTok</p>
+<h1>🐦 TikTok AutoPost</h1>
+<p>Dashboard pengurusan video TikTok</p>
+<small>Status: Dashboard aktif</small>
 </header>
 
-<main>
-  <h2>Selamat Datang</h2>
-  <p>
-    My TikTok Auto Poster ialah projek untuk membantu
-    pengguna mengurus video, kapsyen dan jadual penerbitan
-    kandungan TikTok.
-  </p>
+<div class="card">
+<h3>📹 Pilih Video</h3>
+<input type="file" id="video" accept="video/*">
+<video id="preview" class="preview" controls style="display:none;width:100%"></video>
 
-  <span class="status">Dalam pembangunan</span>
+<label>Kapsyen video</label>
+<textarea id="caption" rows="4" placeholder="Tulis kapsyen anda..."></textarea>
 
-  <p>
-    Penerbitan video akan menggunakan fungsi rasmi
-    TikTok dan tertakluk kepada kelulusan serta had API TikTok.
-  </p>
-</main>
+<label>Hashtag</label>
+<input id="hashtags" placeholder="#fyp #foryou #malaysia">
 
-<footer>
-  My TikTok Auto Poster
-</footer>
+<label>Tarikh posting</label>
+<input type="date" id="date">
 
+<label>Masa posting</label>
+<input type="time" id="time">
+
+<button onclick="savePost()">Simpan Jadual</button>
+</div>
+
+<div class="card">
+<h3>📅 Jadual Posting</h3>
+<div id="posts">Belum ada jadual posting.</div>
+</div>
+
+<div class="card">
+<h3>🔗 Sambungan TikTok</h3>
+<p>Log masuk TikTok akan disediakan selepas konfigurasi API.</p>
+<button onclick="alert('TikTok API belum disambungkan. Sila lengkapkan konfigurasi Developer dahulu.')">Login with TikTok (Belum aktif)</button>
+</div>
+
+<script>
+const video=document.getElementById('video');
+video.addEventListener('change',function(){
+const file=this.files[0];
+if(file){
+const preview=document.getElementById('preview');
+preview.src=URL.createObjectURL(file);
+preview.style.display='block';
+}
+});
+
+function savePost(){
+const file=video.files[0];
+const caption=document.getElementById('caption').value;
+const date=document.getElementById('date').value;
+const time=document.getElementById('time').value;
+const hashtags=document.getElementById('hashtags').value;
+
+if(!file||!date||!time){
+alert('Sila pilih video, tarikh dan masa.');
+return;
+}
+
+const item=document.createElement('div');
+item.className='card';
+item.innerHTML='<b>'+file.name.replace(/[&<>"']/g,'')+'</b><p></p><small></small>';
+item.querySelector('p').textContent=caption+' '+hashtags;
+item.querySelector('small').textContent=date+' '+time;
+document.getElementById('posts').appendChild(item);
+alert('Jadual disimpan dalam paparan ini. Posting automatik belum aktif.');
+}
+</script>
 </body>
 </html>
